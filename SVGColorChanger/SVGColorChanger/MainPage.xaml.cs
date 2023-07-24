@@ -1,24 +1,30 @@
-﻿namespace SVGColorChanger;
+﻿using System.Collections.ObjectModel;
+
+namespace SVGColorChanger;
 
 public partial class MainPage : ContentPage
 {
-	int count = 0;
+	public class ColorChanger
+	{
+		public string PlaceholderText { get; set; }
+	}
 
-	public MainPage()
+    // Creates Collections of each class to populate each CollectionView
+    ObservableCollection<ColorChanger> svgColorChanger = new ObservableCollection<ColorChanger>();
+    public ObservableCollection<ColorChanger> SVGColorChanger { get { return svgColorChanger; } }
+
+    public MainPage()
 	{
 		InitializeComponent();
-	}
 
-	private void OnCounterClicked(object sender, EventArgs e)
+		mainPage.BackgroundColor = Color.FromRgba("#121212");
+
+		svgColorChanger.Add(new ColorChanger() { PlaceholderText = "Press to type" });
+        colorInputCollectionView.ItemsSource = svgColorChanger;
+    }
+
+	void OnApplyButtonClicked(object sender, EventArgs e)
 	{
-		count++;
 
-		if (count == 1)
-			CounterBtn.Text = $"Clicked {count} time";
-		else
-			CounterBtn.Text = $"Clicked {count} times";
-
-		SemanticScreenReader.Announce(CounterBtn.Text);
 	}
 }
-
