@@ -33,4 +33,16 @@ public partial class MainPage : ContentPage
 	{
 		var folder = await FolderPicker.PickAsync(default);
 	}
+
+	void OnAddColorButtonClicked(object sender, EventArgs e)
+	{
+		svgColorChanger.Add(new ColorChanger() { PlaceholderText = "Press to type" });
+		colorInputCollectionView.ItemsSource = svgColorChanger;
+	}
+
+	void OnRemoveColorButtonClicked(object sender, EventArgs e)
+	{
+		svgColorChanger.RemoveAt(svgColorChanger.Count - 1);
+        colorInputCollectionView.ItemsSource = svgColorChanger;
+    }
 }

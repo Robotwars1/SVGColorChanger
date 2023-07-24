@@ -7,7 +7,6 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <RowDefinition Height="55" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -15,45 +14,65 @@
             <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
 
-        <CollectionView x:Name="colorInputCollectionView"
+        <VerticalStackLayout Padding="5" >
+            <CollectionView x:Name="colorInputCollectionView"
                         ItemsSource="{Binding SVGColorChanger}" >
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
 
-                        <Editor Grid.Column="0" 
+                            <Editor Grid.Column="0" 
                                 Placeholder="{Binding PlaceholderText}" />
 
-                        <Editor Grid.Column="1" 
+                            <Editor Grid.Column="1" 
                                 Placeholder="{Binding PlaceholderText}" />
-                    </Grid>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
 
-        <Button x:Name="applyButton"
-                Grid.Row="1"
-                WidthRequest="150"
-                Text="Apply" 
-                Clicked="OnApplyButtonClicked" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-        <Border Grid.Column="1" 
-                Grid.RowSpan="2" >
+                <Button Text="Add color change" 
+                        WidthRequest="175"
+                        HorizontalOptions="End"
+                        Clicked="OnAddColorButtonClicked" />
+
+                <Button Grid.Column="1"
+                        Text="Remove color change" 
+                        WidthRequest="175"
+                        HorizontalOptions="Start"
+                        Clicked="OnRemoveColorButtonClicked" />
+            </Grid>
+            
+        </VerticalStackLayout>
+
+        <Border Grid.Column="1" >
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="55" />
-                    <RowDefinition Height="55" />
-                    <RowDefinition Height="55" />
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="50" />
                 </Grid.RowDefinitions>
 
                 <Button Grid.Row="1"
                         Text="Choose folder"
-                        WidthRequest="200"
+                        WidthRequest="150"
                         Clicked="OnFolderSelectClicked" />
+
+                <Button x:Name="applyButton"
+                        Grid.Row="2"
+                        WidthRequest="150"
+                        Text="Apply" 
+                        Clicked="OnApplyButtonClicked" />
             </Grid>
         </Border>
     </Grid>
