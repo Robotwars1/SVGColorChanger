@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using CommunityToolkit.Maui.Storage;
+using System.Collections.ObjectModel;
 
 namespace SVGColorChanger;
 
@@ -26,5 +27,10 @@ public partial class MainPage : ContentPage
 	void OnApplyButtonClicked(object sender, EventArgs e)
 	{
 
+	}
+
+	async void OnFolderSelectClicked(object sender, EventArgs e)
+	{
+		var folder = await FolderPicker.PickAsync(default);
 	}
 }
