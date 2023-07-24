@@ -32,6 +32,9 @@ public partial class MainPage : ContentPage
 	async void OnFolderSelectClicked(object sender, EventArgs e)
 	{
 		var folder = await FolderPicker.PickAsync(default);
+
+		folderNameLabel.Text = folder.Folder.Name;
+		filePathLabel.Text = folder.Folder.Path;
 	}
 
 	void OnAddColorButtonClicked(object sender, EventArgs e)

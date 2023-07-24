@@ -60,6 +60,9 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50" />
                     <RowDefinition Height="50" />
+                    <RowDefinition Height="100" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="50" />
                     <RowDefinition Height="50" />
                 </Grid.RowDefinitions>
 
@@ -68,8 +71,21 @@
                         WidthRequest="150"
                         Clicked="OnFolderSelectClicked" />
 
+                <VerticalStackLayout Grid.Row="2" 
+                                     Padding="40" >
+                    <Label Text="Folder Name:" 
+                           FontSize="25" />
+                    
+                    <Label x:Name="folderNameLabel" />
+
+                    <Label Text="File Path:" 
+                           FontSize="25" />
+
+                    <Label x:Name="filePathLabel" />
+                </VerticalStackLayout>
+
                 <Button x:Name="applyButton"
-                        Grid.Row="2"
+                        Grid.Row="4"
                         WidthRequest="150"
                         Text="Apply" 
                         Clicked="OnApplyButtonClicked" />
