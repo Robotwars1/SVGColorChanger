@@ -31,10 +31,16 @@ public partial class MainPage : ContentPage
 
 	async void OnFolderSelectClicked(object sender, EventArgs e)
 	{
+		// Select the folder
 		var folder = await FolderPicker.PickAsync(default);
 
+		// Find all .svg files and put them in an array
+		string[] svgs = Directory.GetFiles(folder.Folder.Path, "*.svg");
+
+		// Update info-labels text
 		folderNameLabel.Text = folder.Folder.Name;
 		filePathLabel.Text = folder.Folder.Path;
+		filesFoundLabel.Text = $"{svgs.Count()}";
 	}
 
 	void OnAddColorButtonClicked(object sender, EventArgs e)
