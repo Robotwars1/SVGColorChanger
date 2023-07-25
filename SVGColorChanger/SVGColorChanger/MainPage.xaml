@@ -21,15 +21,21 @@
                     <DataTemplate>
                         <Grid>
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="4*" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="4*" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
 
                             <Editor Grid.Column="0" 
-                                Placeholder="{Binding PlaceholderText}" />
+                                    Placeholder="{Binding PlaceholderText}" />
 
-                            <Editor Grid.Column="1" 
-                                Placeholder="{Binding PlaceholderText}" />
+                            <BoxView Grid.Column="1" />
+
+                            <Editor Grid.Column="2" 
+                                    Placeholder="{Binding PlaceholderText}" />
+
+                            <BoxView Grid.Column="3" />
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
