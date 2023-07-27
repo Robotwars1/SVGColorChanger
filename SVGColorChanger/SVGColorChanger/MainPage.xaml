@@ -16,7 +16,7 @@
 
         <VerticalStackLayout Padding="5" >
             <CollectionView x:Name="colorInputCollectionView"
-                        ItemsSource="{Binding SVGColorChanger}" >
+                            ItemsSource="{Binding SVGColorChanger}" >
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Grid>
@@ -27,15 +27,23 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
 
-                            <Editor Grid.Column="0" 
-                                    Placeholder="{Binding PlaceholderText}" />
+                            <Entry Grid.Column="0" 
+                                   Placeholder="{Binding PlaceholderText}"
+                                   ClassId="{Binding FromId}"
+                                   TextChanged="OnTextChanged" 
+                                   Completed="OnTextCompleted" />
 
-                            <BoxView Grid.Column="1" />
+                            <BoxView Grid.Column="1" 
+                                     Color="{Binding FromColor}" />
 
-                            <Editor Grid.Column="2" 
-                                    Placeholder="{Binding PlaceholderText}" />
+                            <Entry Grid.Column="2" 
+                                   Placeholder="{Binding PlaceholderText}"
+                                   ClassId="{Binding ToId}"
+                                   TextChanged="OnTextChanged" 
+                                   Completed="OnTextCompleted" />
 
-                            <BoxView Grid.Column="3" />
+                            <BoxView Grid.Column="3" 
+                                     Color="{Binding ToColor}" />
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
@@ -82,7 +90,7 @@
                                      Padding="40" >
                     <Label Text="Folder Name:" 
                            FontSize="25" />
-                    
+
                     <Label x:Name="folderNameLabel" />
 
                     <Label Text="File Path:" 
