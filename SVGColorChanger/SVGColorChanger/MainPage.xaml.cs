@@ -61,12 +61,53 @@ public partial class MainPage : ContentPage
 
 	void OnTextChanged(object sender, TextChangedEventArgs e)
 	{
-		// Dumb workaround to update color of BoxView
-		int a = svgColorChanger.Count;
+		// Arrays to temporarily store colors
+        Color[] TempFromColor = new Color[svgColorChanger.Count];
+        Color[] TempToColor = new Color[svgColorChanger.Count];
+
+        // Set color-input into ObservableCollection FromColor and ToColor
+        for (int i = 0; i < svgColorChanger.Count; i++)
+		{
+			if (((Entry)sender).ClassId == svgColorChanger[i].FromId)
+			{
+				try
+				{
+					svgColorChanger[i].FromColor = Color.FromArgb(((Entry)sender).Text);
+				}
+				catch 
+				{
+					// Handle Error
+				}
+			}
+			else if (((Entry)sender).ClassId == svgColorChanger[i].ToId)
+			{
+                try
+                {
+					svgColorChanger[i].ToColor = Color.FromArgb(((Entry)sender).Text);
+                }
+                catch
+                {
+                    // Handle Error
+                }
+            }
+			try
+			{
+                // Temporary stores color(s)
+                TempFromColor[i] = svgColorChanger[i].FromColor;
+                TempToColor[i] = svgColorChanger[i].ToColor;
+            }
+			catch
+			{
+				// Handle Error
+			}
+		}
+
+        // Dumb workaround to update color of BoxView
+        int a = svgColorChanger.Count;
 		svgColorChanger.Clear();
 		for (int i = 0; i < a; i++)
 		{
-			svgColorChanger.Add(new ColorChanger() { PlaceholderText = "Press to type", FromId = $"{svgColorChanger.Count}-From", ToId = $"{svgColorChanger.Count}-To", FromColor = Colors.Blue });
+			svgColorChanger.Add(new ColorChanger() { PlaceholderText = "Press to type", FromId = $"{svgColorChanger.Count}-From", ToId = $"{svgColorChanger.Count}-To", FromColor = TempFromColor[i], ToColor = TempToColor[i] });
 		}
 	}
 
@@ -74,39 +115,4 @@ public partial class MainPage : ContentPage
 	{
 		// To-Do
 	}
-
-	/*
-	void OnEditorTextChanged(object sender, TextChangedEventArgs e)
-	{
-		Console.WriteLine("aaaaaaaaaa");
-		/*
-        for (int i = 0; i < svgColorChanger.Count; i++)
-		{
-            if (((Editor)sender).ClassId == svgColorChanger[i].FromId)
-			{
-				try
-				{
-                    svgColorChanger[i].FromColor = Color.FromArgb(((Editor)sender).Text);
-                }
-				catch 
-				{
-					// To-Do
-				}
-				
-			}
-			else if (((Editor)sender).ClassId == svgColorChanger[i].ToId)
-			{
-				try
-				{
-                    svgColorChanger[i].ToColor = Color.FromArgb(((Editor)sender).Text);
-                }
-				catch
-				{
-					// To-Do
-				}
-			}
-		}
-		
-	}
-	*/
 }
