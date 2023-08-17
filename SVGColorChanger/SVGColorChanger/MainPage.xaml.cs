@@ -10,13 +10,20 @@ public partial class MainPage : ContentPage
 		public string PlaceholderText { get; set; }
 		public string FromId { get; set; }
 		public string ToId { get; set; }
-		public Color FromColor { get; set; }
-		public Color ToColor { get; set; }
 	}
+
+	public class Preview
+	{
+        public Color FromColor { get; set; }
+        public Color ToColor { get; set; }
+    }
 
     // Creates Collections of each class to populate each CollectionView
     ObservableCollection<ColorChanger> svgColorChanger = new ObservableCollection<ColorChanger>();
     public ObservableCollection<ColorChanger> SVGColorChanger { get { return svgColorChanger; } }
+
+	ObservableCollection<Preview> colorPreview = new ObservableCollection<Preview>();
+	public ObservableCollection<Preview> ColorPreview { get { return colorPreview; } }
 
     public MainPage()
 	{
@@ -24,7 +31,10 @@ public partial class MainPage : ContentPage
 
 		mainPage.BackgroundColor = Color.FromRgba("#121212");
 
-		svgColorChanger.Add(new ColorChanger() { PlaceholderText = "Press to type", FromId = $"{svgColorChanger.Count}-From", ToId = $"{svgColorChanger.Count}-To" });
+        colorPreview.Add(new Preview() { FromColor = Colors.Blue, ToColor = Colors.White });
+        colorPreviewCollectionView.ItemsSource = colorPreview;
+
+        svgColorChanger.Add(new ColorChanger() { PlaceholderText = "Press to type", FromId = $"{svgColorChanger.Count}-From", ToId = $"{svgColorChanger.Count}-To" });
         colorInputCollectionView.ItemsSource = svgColorChanger;
     }
 
@@ -49,13 +59,19 @@ public partial class MainPage : ContentPage
 
 	void OnAddColorButtonClicked(object sender, EventArgs e)
 	{
+        colorPreview.Add(new Preview() { FromColor = Colors.Blue, ToColor = Colors.White });
+        colorPreviewCollectionView.ItemsSource = colorPreview;
+
         svgColorChanger.Add(new ColorChanger() { PlaceholderText = "Press to type", FromId = $"{svgColorChanger.Count}-From", ToId = $"{svgColorChanger.Count}-To" });
         colorInputCollectionView.ItemsSource = svgColorChanger;
-	}
+    }
 
 	void OnRemoveColorButtonClicked(object sender, EventArgs e)
 	{
-		svgColorChanger.RemoveAt(svgColorChanger.Count - 1);
+        colorPreview.RemoveAt(colorPreview.Count - 1);
+        colorPreviewCollectionView.ItemsSource = colorPreview;
+
+        svgColorChanger.RemoveAt(svgColorChanger.Count - 1);
         colorInputCollectionView.ItemsSource = svgColorChanger;
     }
 
@@ -72,7 +88,7 @@ public partial class MainPage : ContentPage
 			{
 				try
 				{
-					svgColorChanger[i].FromColor = Color.FromArgb(((Entry)sender).Text);
+					colorPreview[i].FromColor = Color.FromArgb(e.NewTextValue);
 				}
 				catch 
 				{
@@ -83,7 +99,7 @@ public partial class MainPage : ContentPage
 			{
                 try
                 {
-					svgColorChanger[i].ToColor = Color.FromArgb(((Entry)sender).Text);
+                    colorPreview[i].ToColor = Color.FromArgb(e.NewTextValue);
                 }
                 catch
                 {
@@ -92,9 +108,9 @@ public partial class MainPage : ContentPage
             }
 			try
 			{
-                // Temporary stores color(s)
-                TempFromColor[i] = svgColorChanger[i].FromColor;
-                TempToColor[i] = svgColorChanger[i].ToColor;
+				// Temporary stores color(s)
+				TempFromColor[i] = Colors.Blue; //colorPreview[i].FromColor;
+				TempToColor[i] = Colors.Blue; //colorPreview[i].ToColor;
             }
 			catch
 			{
@@ -103,13 +119,14 @@ public partial class MainPage : ContentPage
 		}
 
         // Dumb workaround to update color of BoxView
-        int a = svgColorChanger.Count;
-		svgColorChanger.Clear();
-		for (int i = 0; i < a; i++)
+		colorPreview.Clear();
+		for (int i = 0; i < colorPreview.Count; i++)
 		{
-			svgColorChanger.Add(new ColorChanger() { PlaceholderText = "Press to type", FromId = $"{svgColorChanger.Count}-From", ToId = $"{svgColorChanger.Count}-To", FromColor = TempFromColor[i], ToColor = TempToColor[i] });
-		}
-	}
+			//colorPreview.Add(new Preview() { FromColor = TempFromColor[i], ToColor = TempToColor[i] });
+			colorPreview.Add(new Preview() { FromColor = Colors.Red, ToColor = Colors.Red });
+        }
+		colorPreviewCollectionView.ItemsSource = colorPreview;
+    }
 
 	void OnTextCompleted(object sender, EventArgs e)
 	{
