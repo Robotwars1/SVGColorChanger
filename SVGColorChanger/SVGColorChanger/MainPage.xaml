@@ -62,13 +62,15 @@
                                        Placeholder="{Binding PlaceholderText}"
                                        ClassId="{Binding FromId}"
                                        TextChanged="OnTextChanged" 
-                                       Completed="OnTextCompleted" />
+                                       Completed="OnTextCompleted" 
+                                       MaxLength="7" />
 
                                 <Entry Grid.Column="2" 
                                        Placeholder="{Binding PlaceholderText}"
                                        ClassId="{Binding ToId}"
                                        TextChanged="OnTextChanged" 
-                                       Completed="OnTextCompleted" />
+                                       Completed="OnTextCompleted"
+                                       MaxLength="7" />
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
