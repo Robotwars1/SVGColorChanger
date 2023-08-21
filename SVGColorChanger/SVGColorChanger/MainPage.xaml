@@ -59,14 +59,14 @@
                                 </Grid.ColumnDefinitions>
 
                                 <Entry Grid.Column="0" 
-                                       Placeholder="{Binding PlaceholderText}"
+                                       Placeholder="Press to type"
                                        ClassId="{Binding FromId}"
                                        TextChanged="OnTextChanged" 
                                        Completed="OnTextCompleted" 
                                        MaxLength="7" />
 
                                 <Entry Grid.Column="2" 
-                                       Placeholder="{Binding PlaceholderText}"
+                                       Placeholder="Press to type"
                                        ClassId="{Binding ToId}"
                                        TextChanged="OnTextChanged" 
                                        Completed="OnTextCompleted"

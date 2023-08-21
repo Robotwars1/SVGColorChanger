@@ -7,7 +7,6 @@ public partial class MainPage : ContentPage
 {
 	public class ColorChanger
 	{
-		public string PlaceholderText { get; set; }
 		public string FromId { get; set; }
 		public string ToId { get; set; }
 	}
@@ -34,7 +33,7 @@ public partial class MainPage : ContentPage
         colorPreview.Add(new Preview() { FromColor = Colors.Blue, ToColor = Colors.White });
         colorPreviewCollectionView.ItemsSource = colorPreview;
 
-        svgColorChanger.Add(new ColorChanger() { PlaceholderText = "Press to type", FromId = $"{svgColorChanger.Count}-From", ToId = $"{svgColorChanger.Count}-To" });
+        svgColorChanger.Add(new ColorChanger() { FromId = $"{svgColorChanger.Count}-From", ToId = $"{svgColorChanger.Count}-To" });
         colorInputCollectionView.ItemsSource = svgColorChanger;
     }
 
@@ -62,7 +61,7 @@ public partial class MainPage : ContentPage
         colorPreview.Add(new Preview() { FromColor = Colors.Blue, ToColor = Colors.White });
         colorPreviewCollectionView.ItemsSource = colorPreview;
 
-        svgColorChanger.Add(new ColorChanger() { PlaceholderText = "Press to type", FromId = $"{svgColorChanger.Count}-From", ToId = $"{svgColorChanger.Count}-To" });
+        svgColorChanger.Add(new ColorChanger() { FromId = $"{svgColorChanger.Count}-From", ToId = $"{svgColorChanger.Count}-To" });
         colorInputCollectionView.ItemsSource = svgColorChanger;
     }
 
