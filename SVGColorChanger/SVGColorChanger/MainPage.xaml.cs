@@ -80,7 +80,7 @@ public partial class MainPage : ContentPage
 		// Arrays to temporarily store colors
         Color[] TempFromColor = new Color[svgColorChanger.Count];
         Color[] TempToColor = new Color[svgColorChanger.Count];
-
+		
         // Set color-input into ObservableCollection FromColor and ToColor
         for (int i = 0; i < svgColorChanger.Count; i++)
 		{
@@ -109,8 +109,8 @@ public partial class MainPage : ContentPage
 			try
 			{
 				// Temporary stores color(s)
-				TempFromColor[i] = Colors.Blue; //colorPreview[i].FromColor;
-				TempToColor[i] = Colors.Blue; //colorPreview[i].ToColor;
+				TempFromColor[i] = colorPreview[i].FromColor;
+				TempToColor[i] = colorPreview[i].ToColor;
             }
 			catch
 			{
@@ -119,13 +119,14 @@ public partial class MainPage : ContentPage
 		}
 
         // Dumb workaround to update color of BoxView
-		colorPreview.Clear();
-		for (int i = 0; i < colorPreview.Count; i++)
-		{
-			//colorPreview.Add(new Preview() { FromColor = TempFromColor[i], ToColor = TempToColor[i] });
-			colorPreview.Add(new Preview() { FromColor = Colors.Red, ToColor = Colors.Red });
+        int temp = colorPreview.Count; // Store value before resetting
+        colorPreview.Clear();
+        for (int i = 0; i < temp; i++)
+        {
+            colorPreview.Add(new Preview() { FromColor = TempFromColor[i], ToColor = TempToColor[i] });
+            //colorPreview.Add(new Preview() { FromColor = Colors.Red, ToColor = Colors.Red }); // Not working for some reason
         }
-		colorPreviewCollectionView.ItemsSource = colorPreview;
+        colorPreviewCollectionView.ItemsSource = colorPreview;
     }
 
 	void OnTextCompleted(object sender, EventArgs e)
