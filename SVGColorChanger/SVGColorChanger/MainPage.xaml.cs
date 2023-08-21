@@ -24,6 +24,9 @@ public partial class MainPage : ContentPage
 	ObservableCollection<Preview> colorPreview = new ObservableCollection<Preview>();
 	public ObservableCollection<Preview> ColorPreview { get { return colorPreview; } }
 
+	string[] svgs;
+	string FilePath;
+
     public MainPage()
 	{
 		InitializeComponent();
@@ -39,16 +42,76 @@ public partial class MainPage : ContentPage
 
 	void OnApplyButtonClicked(object sender, EventArgs e)
 	{
+		string Line;
 
-	}
+		// Create temp file before doing re-writing
+        StreamWriter sw = File.CreateText($"{FilePath}\\temp.txt");
 
-	async void OnFolderSelectClicked(object sender, EventArgs e)
+        // Foreach .svg file
+        for (int i = 0; i < svgs.Count(); i++)
+		{
+			try
+			{
+				/*
+                // Open file
+                StreamReader sr = new StreamReader($"{svgs[i]}");
+
+				// Read start until "<svg appears,
+				// signaling the start of actual .svg properties
+				Line = sr.ReadLine();
+				while (Line != "<svg")
+				{
+					sw.WriteLine(Line);
+					Line = sr.ReadLine();
+				}
+
+				// Read "<svg"
+                Line = sr.ReadLine();
+
+                // Until reaches end of file
+                while (Line != null)
+				{
+                    // Write into temp file line-by-line
+					sw.WriteLine(Line);
+
+                    // Read the rest of the file line-by-line
+                    Line = sr.ReadLine();
+				}
+				*/
+			}
+			catch
+			{
+				// TODO
+			}
+		}
+
+
+
+
+
+        // If line has #xxxxxx (hex code color), replace with new hex code
+        // Write replaced line into temp file liny-by-line
+
+        // When finished writing and if no errors
+        // Copy contents of temp file into original .svg
+        // If no errors, clear temp file
+        // If last file, delete temp file
+
+        // Repeat for every .svg file
+
+        // Update progress-bar
+    }
+
+    async void OnFolderSelectClicked(object sender, EventArgs e)
 	{
 		// Select the folder
 		var folder = await FolderPicker.PickAsync(default);
 
 		// Find all .svg files and put them in an array
-		string[] svgs = Directory.GetFiles(folder.Folder.Path, "*.svg");
+		svgs = Directory.GetFiles(folder.Folder.Path, "*.svg");
+
+		// Save FilePath for changing .svg files
+		FilePath = folder.Folder.Path;
 
 		// Update info-labels text
 		folderNameLabel.Text = folder.Folder.Name;
@@ -123,7 +186,6 @@ public partial class MainPage : ContentPage
         for (int i = 0; i < temp; i++)
         {
             colorPreview.Add(new Preview() { FromColor = TempFromColor[i], ToColor = TempToColor[i] });
-            //colorPreview.Add(new Preview() { FromColor = Colors.Red, ToColor = Colors.Red }); // Not working for some reason
         }
         colorPreviewCollectionView.ItemsSource = colorPreview;
     }
