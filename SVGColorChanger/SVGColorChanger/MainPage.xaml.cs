@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui.Storage;
+using Svg;
 using System.Collections.ObjectModel;
 
 namespace SVGColorChanger;
@@ -42,16 +43,23 @@ public partial class MainPage : ContentPage
 
 	void OnApplyButtonClicked(object sender, EventArgs e)
 	{
-		string Line;
+		//string Line;
 
 		// Create temp file before doing re-writing
-        StreamWriter sw = File.CreateText($"{FilePath}\\temp.txt");
+        //StreamWriter sw = File.CreateText($"{FilePath}\\temp.txt");
 
         // Foreach .svg file
         for (int i = 0; i < svgs.Count(); i++)
 		{
 			try
 			{
+				// Open file
+				var SvgFile = SvgDocument.Open(svgs[i]);
+
+				SvgPaintServer Color = SvgFile.Color;
+				string a = SvgFile.Color.ToString();
+				
+
 				/*
                 // Open file
                 StreamReader sr = new StreamReader($"{svgs[i]}");
