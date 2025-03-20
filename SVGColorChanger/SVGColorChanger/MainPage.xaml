@@ -2,6 +2,7 @@
 <ContentPage x:Name="mainPage"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:SVGColorChanger"
              x:Class="SVGColorChanger.MainPage" >
 
     <Grid>
@@ -131,11 +132,15 @@
                     <Label x:Name="filesFoundLabel" />
                 </VerticalStackLayout>
 
-                <Button x:Name="applyButton"
-                        Grid.Row="4"
-                        WidthRequest="150"
-                        Text="Apply" 
-                        Clicked="OnApplyButtonClicked" />
+                <VerticalStackLayout Grid.Row="4">
+                    <Button x:Name="applyButton"
+                            WidthRequest="150"
+                            Text="Apply" 
+                            Clicked="OnApplyButtonClicked" />
+
+                    <local:ProgressBar x:Name="progressBar"
+                                       WidthRequest="250"/>
+                </VerticalStackLayout>
             </Grid>
         </Border>
     </Grid>

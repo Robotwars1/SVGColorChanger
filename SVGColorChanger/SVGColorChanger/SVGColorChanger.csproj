@@ -54,4 +54,10 @@
 		<PackageReference Include="Svg" Version="3.4.4" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <MauiXaml Update="ProgressBar.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
 </Project>

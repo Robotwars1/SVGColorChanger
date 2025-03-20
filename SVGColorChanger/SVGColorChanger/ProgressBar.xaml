@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SVGColorChanger.ProgressBar">
+    <Grid x:Name="ProgressGrid"
+          ColumnDefinitions="0, *"
+          MinimumWidthRequest="200"
+          MinimumHeightRequest="50" >
+        <BoxView x:Name="ProgressIndicator"
+                 Grid.Column="0"
+                 Color="Green" />
+    </Grid>
+</ContentView>

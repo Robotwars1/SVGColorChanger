@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Maui.Storage;
-using Svg;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace SVGColorChanger;
 
@@ -19,14 +19,14 @@ public partial class MainPage : ContentPage
     }
 
     // Creates Collections of each class to populate each CollectionView
-    ObservableCollection<ColorChanger> svgColorChanger = new ObservableCollection<ColorChanger>();
+    ObservableCollection<ColorChanger> svgColorChanger = new();
     public ObservableCollection<ColorChanger> SVGColorChanger { get { return svgColorChanger; } }
 
-	ObservableCollection<Preview> colorPreview = new ObservableCollection<Preview>();
+	ObservableCollection<Preview> colorPreview = new();
 	public ObservableCollection<Preview> ColorPreview { get { return colorPreview; } }
 
 	string[] svgs;
-	string FilePath;
+	string filePath;
 
     public MainPage()
 	{
@@ -43,71 +43,46 @@ public partial class MainPage : ContentPage
 
 	void OnApplyButtonClicked(object sender, EventArgs e)
 	{
-		//string Line;
-
-		// Create temp file before doing re-writing
-        //StreamWriter sw = File.CreateText($"{FilePath}\\temp.txt");
-
-        // Foreach .svg file
-        for (int i = 0; i < svgs.Count(); i++)
-		{
-			try
-			{
-				// Open file
-				var SvgFile = SvgDocument.Open(svgs[i]);
-
-				SvgPaintServer Color = SvgFile.Color;
-				string a = SvgFile.Color.ToString();
-				
-
-				/*
-                // Open file
-                StreamReader sr = new StreamReader($"{svgs[i]}");
-
-				// Read start until "<svg appears,
-				// signaling the start of actual .svg properties
-				Line = sr.ReadLine();
-				while (Line != "<svg")
-				{
-					sw.WriteLine(Line);
-					Line = sr.ReadLine();
-				}
-
-				// Read "<svg"
-                Line = sr.ReadLine();
-
-                // Until reaches end of file
-                while (Line != null)
-				{
-                    // Write into temp file line-by-line
-					sw.WriteLine(Line);
-
-                    // Read the rest of the file line-by-line
-                    Line = sr.ReadLine();
-				}
-				*/
-			}
-			catch
-			{
-				// TODO
-			}
-		}
-
-
-
-
-
-        // If line has #xxxxxx (hex code color), replace with new hex code
-        // Write replaced line into temp file liny-by-line
-
-        // When finished writing and if no errors
-        // Copy contents of temp file into original .svg
-        // If no errors, clear temp file
-        // If last file, delete temp file
+		progressBar.Setup(svgs.Length);
 
         // Repeat for every .svg file
+        for (int i = 0; i < svgs.Length; i++)
+		{
+			string NewText = "";
 
-        // Update progress-bar
+			// Read the entire file before chaning it
+			IEnumerable<string> Lines = File.ReadLines(svgs[i]);
+
+            // Go through the file line by line, replacing colors as found
+            // If line has #xxxxxx (hex code color), replace with new hex code
+            foreach (string Line in Lines)
+            {
+				// If Line is empty or just newline, ignore it for the switched file
+				if (Line == "" || Line == "\n")
+				{
+					continue;
+				}
+
+				string NewLine = Line;
+
+				// Go through every color-switch
+				foreach (Preview ColorPreview in colorPreview)
+				{
+                    // Do said color-switch
+                    NewLine = NewLine.Replace($"fill:{ColorPreview.FromColor.ToHex().ToLower()}", $"fill:{ColorPreview.ToColor.ToHex().ToLower()}");
+				}
+
+				// Save the new line for writing
+				NewText += NewLine + "\n";
+			}
+
+            // Write the new text to the file
+            File.WriteAllText(svgs[i], NewText);
+
+            // Update progress-bar
+            progressBar.Increment();
+			Debug.WriteLine($"Finished object nr:{i}");
+        }
     }
 
     async void OnFolderSelectClicked(object sender, EventArgs e)
@@ -118,13 +93,13 @@ public partial class MainPage : ContentPage
 		// Find all .svg files and put them in an array
 		svgs = Directory.GetFiles(folder.Folder.Path, "*.svg");
 
-		// Save FilePath for changing .svg files
-		FilePath = folder.Folder.Path;
+        // Save FilePath for changing .svg files
+        filePath = folder.Folder.Path;
 
 		// Update info-labels text
 		folderNameLabel.Text = folder.Folder.Name;
 		filePathLabel.Text = folder.Folder.Path;
-		filesFoundLabel.Text = $"{svgs.Count()}";
+		filesFoundLabel.Text = $"{svgs.Length}";
 	}
 
 	void OnAddColorButtonClicked(object sender, EventArgs e)
