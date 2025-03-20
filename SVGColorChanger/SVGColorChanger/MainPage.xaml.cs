@@ -41,7 +41,18 @@ public partial class MainPage : ContentPage
         colorInputCollectionView.ItemsSource = svgColorChanger;
     }
 
-	void OnApplyButtonClicked(object sender, EventArgs e)
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+
+        Window.MinimumWidth = 1280;
+        Window.MaximumWidth = 1280;
+        Window.MinimumHeight = 720;
+        Window.MaximumHeight = 720;
+        Window.Title = "SVGColorChanger";
+    }
+
+    void OnApplyButtonClicked(object sender, EventArgs e)
 	{
 		progressBar.Setup(svgs.Length);
 
