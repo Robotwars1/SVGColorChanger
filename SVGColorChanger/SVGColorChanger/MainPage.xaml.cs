@@ -121,11 +121,14 @@ public partial class MainPage : ContentPage
 
 	void OnRemoveColorButtonClicked(object sender, EventArgs e)
 	{
-        ColorPreview.RemoveAt(ColorPreview.Count - 1);
-        colorPreviewCollectionView.ItemsSource = ColorPreview;
+		if (ColorPreview.Count > 0)
+		{
+            ColorPreview.RemoveAt(ColorPreview.Count - 1);
+            colorPreviewCollectionView.ItemsSource = ColorPreview;
 
-        SVGColorChanger.RemoveAt(SVGColorChanger.Count - 1);
-        colorInputCollectionView.ItemsSource = SVGColorChanger;
+            SVGColorChanger.RemoveAt(SVGColorChanger.Count - 1);
+            colorInputCollectionView.ItemsSource = SVGColorChanger;
+        }
     }
 
 	void OnTextChanged(object sender, TextChangedEventArgs e)
