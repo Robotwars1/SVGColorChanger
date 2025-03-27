@@ -19,11 +19,8 @@ public partial class MainPage : ContentPage
     }
 
     // Creates Collections of each class to populate each CollectionView
-    ObservableCollection<ColorChanger> svgColorChanger = new();
-    public ObservableCollection<ColorChanger> SVGColorChanger { get { return svgColorChanger; } }
-
-	ObservableCollection<Preview> colorPreview = new();
-	public ObservableCollection<Preview> ColorPreview { get { return colorPreview; } }
+    public ObservableCollection<ColorChanger> SVGColorChanger = new();
+	public ObservableCollection<Preview> ColorPreview = new();
 
 	string[] svgs;
 	string filePath;
@@ -34,11 +31,11 @@ public partial class MainPage : ContentPage
 
 		mainPage.BackgroundColor = Color.FromRgba("#121212");
 
-        colorPreview.Add(new Preview() { FromColor = Colors.Blue, ToColor = Colors.White });
-        colorPreviewCollectionView.ItemsSource = colorPreview;
+        ColorPreview.Add(new Preview() { FromColor = Colors.Blue, ToColor = Colors.White });
+        colorPreviewCollectionView.ItemsSource = ColorPreview;
 
-        svgColorChanger.Add(new ColorChanger() { FromId = $"{svgColorChanger.Count}-From", ToId = $"{svgColorChanger.Count}-To" });
-        colorInputCollectionView.ItemsSource = svgColorChanger;
+        SVGColorChanger.Add(new ColorChanger() { FromId = $"{SVGColorChanger.Count}-From", ToId = $"{SVGColorChanger.Count}-To" });
+        colorInputCollectionView.ItemsSource = SVGColorChanger;
     }
 
     protected override void OnAppearing()
@@ -77,7 +74,7 @@ public partial class MainPage : ContentPage
 				string NewLine = Line;
 
 				// Go through every color-switch
-				foreach (Preview ColorPreview in colorPreview)
+				foreach (Preview ColorPreview in ColorPreview)
 				{
                     // Do said color-switch
                     NewLine = NewLine.Replace($"fill:{ColorPreview.FromColor.ToHex().ToLower()}", $"fill:{ColorPreview.ToColor.ToHex().ToLower()}");
@@ -115,47 +112,47 @@ public partial class MainPage : ContentPage
 
 	void OnAddColorButtonClicked(object sender, EventArgs e)
 	{
-        colorPreview.Add(new Preview() { FromColor = Colors.Blue, ToColor = Colors.White });
-        colorPreviewCollectionView.ItemsSource = colorPreview;
+        ColorPreview.Add(new Preview() { FromColor = Colors.Blue, ToColor = Colors.White });
+        colorPreviewCollectionView.ItemsSource = ColorPreview;
 
-        svgColorChanger.Add(new ColorChanger() { FromId = $"{svgColorChanger.Count}-From", ToId = $"{svgColorChanger.Count}-To" });
-        colorInputCollectionView.ItemsSource = svgColorChanger;
+        SVGColorChanger.Add(new ColorChanger() { FromId = $"{SVGColorChanger.Count}-From", ToId = $"{SVGColorChanger.Count}-To" });
+        colorInputCollectionView.ItemsSource = SVGColorChanger;
     }
 
 	void OnRemoveColorButtonClicked(object sender, EventArgs e)
 	{
-        colorPreview.RemoveAt(colorPreview.Count - 1);
-        colorPreviewCollectionView.ItemsSource = colorPreview;
+        ColorPreview.RemoveAt(ColorPreview.Count - 1);
+        colorPreviewCollectionView.ItemsSource = ColorPreview;
 
-        svgColorChanger.RemoveAt(svgColorChanger.Count - 1);
-        colorInputCollectionView.ItemsSource = svgColorChanger;
+        SVGColorChanger.RemoveAt(SVGColorChanger.Count - 1);
+        colorInputCollectionView.ItemsSource = SVGColorChanger;
     }
 
 	void OnTextChanged(object sender, TextChangedEventArgs e)
 	{
 		// Arrays to temporarily store colors
-        Color[] TempFromColor = new Color[svgColorChanger.Count];
-        Color[] TempToColor = new Color[svgColorChanger.Count];
+        Color[] TempFromColor = new Color[SVGColorChanger.Count];
+        Color[] TempToColor = new Color[SVGColorChanger.Count];
 		
         // Set color-input into ObservableCollection FromColor and ToColor
-        for (int i = 0; i < svgColorChanger.Count; i++)
+        for (int i = 0; i < SVGColorChanger.Count; i++)
 		{
-			if (((Entry)sender).ClassId == svgColorChanger[i].FromId)
+			if (((Entry)sender).ClassId == SVGColorChanger[i].FromId)
 			{
 				try
 				{
-					colorPreview[i].FromColor = Color.FromArgb(e.NewTextValue);
+					ColorPreview[i].FromColor = Color.FromArgb(e.NewTextValue);
 				}
 				catch 
 				{
 					// Handle Error
 				}
 			}
-			else if (((Entry)sender).ClassId == svgColorChanger[i].ToId)
+			else if (((Entry)sender).ClassId == SVGColorChanger[i].ToId)
 			{
                 try
                 {
-                    colorPreview[i].ToColor = Color.FromArgb(e.NewTextValue);
+                    ColorPreview[i].ToColor = Color.FromArgb(e.NewTextValue);
                 }
                 catch
                 {
@@ -165,8 +162,8 @@ public partial class MainPage : ContentPage
 			try
 			{
 				// Temporary stores color(s)
-				TempFromColor[i] = colorPreview[i].FromColor;
-				TempToColor[i] = colorPreview[i].ToColor;
+				TempFromColor[i] = ColorPreview[i].FromColor;
+				TempToColor[i] = ColorPreview[i].ToColor;
             }
 			catch
 			{
@@ -175,13 +172,13 @@ public partial class MainPage : ContentPage
 		}
 
         // Dumb workaround to update color of BoxView
-        int temp = colorPreview.Count; // Store value before resetting
-        colorPreview.Clear();
+        int temp = ColorPreview.Count; // Store value before resetting
+        ColorPreview.Clear();
         for (int i = 0; i < temp; i++)
         {
-            colorPreview.Add(new Preview() { FromColor = TempFromColor[i], ToColor = TempToColor[i] });
+            ColorPreview.Add(new Preview() { FromColor = TempFromColor[i], ToColor = TempToColor[i] });
         }
-        colorPreviewCollectionView.ItemsSource = colorPreview;
+        colorPreviewCollectionView.ItemsSource = ColorPreview;
     }
 
 	void OnTextCompleted(object sender, EventArgs e)
