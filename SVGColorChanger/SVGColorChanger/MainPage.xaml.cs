@@ -22,8 +22,6 @@ public partial class MainPage : ContentPage
 	{
 		InitializeComponent();
 
-		mainPage.BackgroundColor = Color.FromRgba("#121212");
-
         ColorChanges.Add(new ColorChange() { FromEntryID = $"{ColorChanges.Count}-From", FromColor = Colors.Blue, ToEntryID = $"{ColorChanges.Count}-To", ToColor = Colors.White });
         ColorChangesCollectionView.ItemsSource = ColorChanges;
     }

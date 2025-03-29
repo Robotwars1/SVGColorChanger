@@ -3,7 +3,8 @@
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:SVGColorChanger"
-             x:Class="SVGColorChanger.MainPage" >
+             x:Class="SVGColorChanger.MainPage"
+             BackgroundColor="#1f1f1f">
 
     <Grid ColumnDefinitions="3*, 2*">
         <Grid Padding="5"
@@ -42,12 +43,16 @@
                 <Button Text="Add color change" 
                         WidthRequest="175"
                         HorizontalOptions="End"
+                        BackgroundColor="#ac99ea"
+                        TextColor="#242424"
                         Clicked="OnAddColorButtonClicked" />
 
                 <Button Grid.Column="1"
                         Text="Remove color change" 
                         WidthRequest="175"
                         HorizontalOptions="Start"
+                        BackgroundColor="#ac99ea"
+                        TextColor="#242424"
                         Clicked="OnRemoveColorButtonClicked" />
             </Grid>
         </Grid>
@@ -57,6 +62,8 @@
                 <Button Grid.Row="1"
                         Text="Choose folder"
                         WidthRequest="150"
+                        BackgroundColor="#ac99ea"
+                        TextColor="#242424"
                         Clicked="OnFolderSelectClicked" />
 
                 <!-- Info-labels -->
@@ -82,6 +89,8 @@
                     <Button x:Name="applyButton"
                             WidthRequest="150"
                             Text="Apply" 
+                            BackgroundColor="#ac99ea"
+                            TextColor="#242424"
                             Clicked="OnApplyButtonClicked" />
 
                     <local:ProgressBar x:Name="progressBar"
