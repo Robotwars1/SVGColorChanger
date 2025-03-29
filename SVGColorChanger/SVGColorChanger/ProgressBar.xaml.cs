@@ -10,9 +10,9 @@ public partial class ProgressBar : ContentView
 		InitializeComponent();
 	}
 
-	public void Setup(int _ItemCount)
+	public void Setup(int itemCount)
 	{
-		ItemCount = _ItemCount;
+		ItemCount = itemCount;
 	}
 
 	public void Increment()

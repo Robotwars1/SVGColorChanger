@@ -6,24 +6,17 @@ namespace SVGColorChanger;
 
 public partial class MainPage : ContentPage
 {
-	public class ColorChanger
+	public class ColorChange
 	{
-		public string FromId { get; set; }
-		public string ToId { get; set; }
-	}
-
-	public class Preview
-	{
+		public string FromEntryID { get; set; }
         public Color FromColor { get; set; }
+        public string ToEntryID { get; set; }
         public Color ToColor { get; set; }
     }
 
-    // Creates Collections of each class to populate each CollectionView
-    public ObservableCollection<ColorChanger> SVGColorChanger = new();
-	public ObservableCollection<Preview> ColorPreview = new();
+    public ObservableCollection<ColorChange> ColorChanges = [];
 
-	string[] svgs;
-	string filePath;
+	string[] SVGs;
 
     public MainPage()
 	{
@@ -31,11 +24,8 @@ public partial class MainPage : ContentPage
 
 		mainPage.BackgroundColor = Color.FromRgba("#121212");
 
-        ColorPreview.Add(new Preview() { FromColor = Colors.Blue, ToColor = Colors.White });
-        colorPreviewCollectionView.ItemsSource = ColorPreview;
-
-        SVGColorChanger.Add(new ColorChanger() { FromId = $"{SVGColorChanger.Count}-From", ToId = $"{SVGColorChanger.Count}-To" });
-        colorInputCollectionView.ItemsSource = SVGColorChanger;
+        ColorChanges.Add(new ColorChange() { FromEntryID = $"{ColorChanges.Count}-From", FromColor = Colors.Blue, ToEntryID = $"{ColorChanges.Count}-To", ToColor = Colors.White });
+        ColorChangesCollectionView.ItemsSource = ColorChanges;
     }
 
     protected override void OnAppearing()
@@ -51,15 +41,15 @@ public partial class MainPage : ContentPage
 
     void OnApplyButtonClicked(object sender, EventArgs e)
 	{
-		progressBar.Setup(svgs.Length);
+		progressBar.Setup(SVGs.Length);
 
         // Repeat for every .svg file
-        for (int i = 0; i < svgs.Length; i++)
+        for (int i = 0; i < SVGs.Length; i++)
 		{
 			string NewText = "";
 
 			// Read the entire file before chaning it
-			IEnumerable<string> Lines = File.ReadLines(svgs[i]);
+			IEnumerable<string> Lines = File.ReadLines(SVGs[i]);
 
             // Go through the file line by line, replacing colors as found
             // If line has #xxxxxx (hex code color), replace with new hex code
@@ -74,10 +64,10 @@ public partial class MainPage : ContentPage
 				string NewLine = Line;
 
 				// Go through every color-switch
-				foreach (Preview ColorPreview in ColorPreview)
+				foreach (ColorChange ColorChange in ColorChanges)
 				{
                     // Do said color-switch
-                    NewLine = NewLine.Replace($"fill:{ColorPreview.FromColor.ToHex().ToLower()}", $"fill:{ColorPreview.ToColor.ToHex().ToLower()}");
+                    NewLine = NewLine.Replace($"fill:{ColorChange.FromColor.ToHex().ToLower()}", $"fill:{ColorChange.ToColor.ToHex().ToLower()}");
 				}
 
 				// Save the new line for writing
@@ -85,7 +75,7 @@ public partial class MainPage : ContentPage
 			}
 
             // Write the new text to the file
-            File.WriteAllText(svgs[i], NewText);
+            File.WriteAllText(SVGs[i], NewText);
 
             // Update progress-bar
             progressBar.Increment();
@@ -96,96 +86,60 @@ public partial class MainPage : ContentPage
     async void OnFolderSelectClicked(object sender, EventArgs e)
 	{
 		// Select the folder
-		var folder = await FolderPicker.PickAsync(default);
+		var Result = await FolderPicker.PickAsync(default);
 
-		// Find all .svg files and put them in an array
-		svgs = Directory.GetFiles(folder.Folder.Path, "*.svg");
-
-        // Save FilePath for changing .svg files
-        filePath = folder.Folder.Path;
+        // Find all .svg files and put them in an array
+        SVGs = Directory.GetFiles(Result.Folder.Path, "*.svg");
 
 		// Update info-labels text
-		folderNameLabel.Text = folder.Folder.Name;
-		filePathLabel.Text = folder.Folder.Path;
-		filesFoundLabel.Text = $"{svgs.Length}";
+		folderNameLabel.Text = Result.Folder.Name;
+		filePathLabel.Text = Result.Folder.Path;
+		filesFoundLabel.Text = $"{SVGs.Length}";
 	}
 
 	void OnAddColorButtonClicked(object sender, EventArgs e)
 	{
-        ColorPreview.Add(new Preview() { FromColor = Colors.Blue, ToColor = Colors.White });
-        colorPreviewCollectionView.ItemsSource = ColorPreview;
-
-        SVGColorChanger.Add(new ColorChanger() { FromId = $"{SVGColorChanger.Count}-From", ToId = $"{SVGColorChanger.Count}-To" });
-        colorInputCollectionView.ItemsSource = SVGColorChanger;
+        ColorChanges.Add(new ColorChange() { FromEntryID = $"{ColorChanges.Count}-From", FromColor = Colors.Blue, ToEntryID = $"{ColorChanges.Count}-To", ToColor = Colors.White });
+        ColorChangesCollectionView.ItemsSource = ColorChanges;
     }
 
 	void OnRemoveColorButtonClicked(object sender, EventArgs e)
 	{
-		if (ColorPreview.Count > 0)
+		if (ColorChanges.Count > 0)
 		{
-            ColorPreview.RemoveAt(ColorPreview.Count - 1);
-            colorPreviewCollectionView.ItemsSource = ColorPreview;
-
-            SVGColorChanger.RemoveAt(SVGColorChanger.Count - 1);
-            colorInputCollectionView.ItemsSource = SVGColorChanger;
+			ColorChanges.RemoveAt(ColorChanges.Count - 1);
+            ColorChangesCollectionView.ItemsSource = ColorChanges;
         }
     }
 
 	void OnTextChanged(object sender, TextChangedEventArgs e)
 	{
-		// Arrays to temporarily store colors
-        Color[] TempFromColor = new Color[SVGColorChanger.Count];
-        Color[] TempToColor = new Color[SVGColorChanger.Count];
-		
-        // Set color-input into ObservableCollection FromColor and ToColor
-        for (int i = 0; i < SVGColorChanger.Count; i++)
+        for (int i = 0; i < ColorChanges.Count; i++)
 		{
-			if (((Entry)sender).ClassId == SVGColorChanger[i].FromId)
+			if (((Entry)sender).ClassId == ColorChanges[i].FromEntryID)
 			{
 				try
 				{
-					ColorPreview[i].FromColor = Color.FromArgb(e.NewTextValue);
+                    ColorChanges[i].FromColor = Color.FromArgb(e.NewTextValue);
 				}
 				catch 
 				{
 					// Handle Error
 				}
 			}
-			else if (((Entry)sender).ClassId == SVGColorChanger[i].ToId)
+			else if (((Entry)sender).ClassId == ColorChanges[i].ToEntryID)
 			{
                 try
                 {
-                    ColorPreview[i].ToColor = Color.FromArgb(e.NewTextValue);
+                    ColorChanges[i].ToColor = Color.FromArgb(e.NewTextValue);
                 }
                 catch
                 {
                     // Handle Error
                 }
             }
-			try
-			{
-				// Temporary stores color(s)
-				TempFromColor[i] = ColorPreview[i].FromColor;
-				TempToColor[i] = ColorPreview[i].ToColor;
-            }
-			catch
-			{
-				// Handle Error
-			}
-		}
-
-        // Dumb workaround to update color of BoxView
-        int temp = ColorPreview.Count; // Store value before resetting
-        ColorPreview.Clear();
-        for (int i = 0; i < temp; i++)
-        {
-            ColorPreview.Add(new Preview() { FromColor = TempFromColor[i], ToColor = TempToColor[i] });
         }
-        colorPreviewCollectionView.ItemsSource = ColorPreview;
-    }
 
-	void OnTextCompleted(object sender, EventArgs e)
-	{
-		// To-Do
-	}
+        ColorChangesCollectionView.ItemsSource = ColorChanges;
+    }
 }

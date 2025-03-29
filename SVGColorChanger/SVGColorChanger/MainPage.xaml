@@ -5,85 +5,40 @@
              xmlns:local="clr-namespace:SVGColorChanger"
              x:Class="SVGColorChanger.MainPage" >
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*" />
-            <ColumnDefinition Width="2*" />
-        </Grid.ColumnDefinitions>
-
-        <Grid Padding="5">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="50" />
-            </Grid.RowDefinitions>
-            
+    <Grid ColumnDefinitions="3*, 2*">
+        <Grid Padding="5"
+              RowDefinitions="*, 50">
             <Grid>
-                <CollectionView x:Name="colorPreviewCollectionView"
-                                ItemsSource="{Binding ColorPreview}" >
+                <CollectionView x:Name="ColorChangesCollectionView"
+                                ItemsSource="{Binding ColorChanges}" >
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="4*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="4*" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-
-                                <!-- Temp fix to make CollectionView show and force correct height of CollectionView -->
-                                <Entry Grid.Column="0" />
-
+                            <Grid ColumnDefinitions="4*, *, 4*, *">
+                                <Entry Grid.Column="0" 
+                                       Placeholder="Press to type"
+                                       ClassId="{Binding FromEntryID}"
+                                       TextChanged="OnTextChanged"
+                                       MaxLength="7" />
+                                
                                 <BoxView Grid.Column="1"
                                          Color="{Binding FromColor}" />
 
+                                <Entry Grid.Column="2" 
+                                       Placeholder="Press to type"
+                                       ClassId="{Binding ToEntryID}"
+                                       TextChanged="OnTextChanged"
+                                       MaxLength="7" />
+                                
                                 <BoxView Grid.Column="3" 
                                          Color="{Binding ToColor}" />
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-
-                <CollectionView x:Name="colorInputCollectionView"
-                                ItemsSource="{Binding SVGColorChanger}" >
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="4*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="4*" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-
-                                <Entry Grid.Column="0" 
-                                       Placeholder="Press to type"
-                                       ClassId="{Binding FromId}"
-                                       TextChanged="OnTextChanged" 
-                                       Completed="OnTextCompleted" 
-                                       MaxLength="7" />
-
-                                <Entry Grid.Column="2" 
-                                       Placeholder="Press to type"
-                                       ClassId="{Binding ToId}"
-                                       TextChanged="OnTextChanged" 
-                                       Completed="OnTextCompleted"
-                                       MaxLength="7" />
-                            </Grid>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
             </Grid>
 
-            <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-
+            <Grid Grid.Row="1"
+                  ColumnDefinitions="*, *">
                 <Button Text="Add color change" 
                         WidthRequest="175"
                         HorizontalOptions="End"
@@ -98,16 +53,7 @@
         </Grid>
 
         <Border Grid.Column="1" >
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="50" />
-                    <RowDefinition Height="50" />
-                    <RowDefinition Height="150" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="50" />
-                    <RowDefinition Height="50" />
-                </Grid.RowDefinitions>
-
+            <Grid RowDefinitions="50, 50, 150, *, 50, 50">
                 <Button Grid.Row="1"
                         Text="Choose folder"
                         WidthRequest="150"
